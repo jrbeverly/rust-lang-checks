@@ -10,14 +10,19 @@ jobs:
     runs-on: ubuntu-latest
     services:
       postgres:
-        image: postgres:11
+        image: postgres:latest
         env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: ci_db_test
+          POSTGRES_DB: postgres_db
+          POSTGRES_PORT: 5432
+          POSTGRES_USER: postgres_user
+          POSTGRES_PASSWORD: postgres_password
         ports:
           - 5432:5432
-        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+        options: 
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     steps:
       - uses: actions/checkout@v2.3.4
       - name: "Basic" 
@@ -28,10 +33,14 @@ jobs:
         working-directory: 'src/maps'
         run: |
             cargo run
-      - name: "Databases" 
+      - name: "Installing diesel_cli" 
         working-directory: 'src/dbproject'
         run: |
-            export DATABASE_URL=postgres://postgres:postgres@postgres/ci_db_test
             cargo install diesel_cli --no-default-features --features postgres
+      - name: "Databases" 
+        working-directory: 'src/dbproject'
+        env:
+          DATABASE_URL: postgres://postgres_user:postgres_password@localhost:5432/postgres_db
+        run: |
             diesel setup
             cargo run --bin show_posts 

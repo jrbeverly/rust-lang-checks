@@ -32,5 +32,6 @@ jobs:
         working-directory: 'src/dbproject'
         run: |
             export DATABASE_URL=postgres://postgres:postgres@postgres/ci_db_test
-            cargo setup
+            cargo install diesel_cli --no-default-features --features postgres
+            diesel setup
             cargo run --bin show_posts 

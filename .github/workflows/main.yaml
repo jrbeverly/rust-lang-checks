@@ -10,5 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2.3.4
-      - run: |
-          cargo --help
+      - name: "Basic" 
+        working-directory: 'src/basics'
+        run: |
+            cargo run

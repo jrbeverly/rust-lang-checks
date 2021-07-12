@@ -43,4 +43,5 @@ jobs:
           DATABASE_URL: postgres://postgres_user:postgres_password@localhost:5432/postgres_db
         run: |
             diesel setup
+            cargo run --bin new_published_post 'sample' 'abc' 
             cargo run --bin show_posts 

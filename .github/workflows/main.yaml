@@ -14,3 +14,7 @@ jobs:
         working-directory: 'src/basics'
         run: |
             cargo run
+      - name: "Maps" 
+        working-directory: 'src/maps'
+        run: |
+            cargo run
